@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Page</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+       input{
+        width: 50%;
+        height: 40px;
+        margin-left: 140px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        text-align: center;
+        font-size: 20px;
+       }
+       input+button{
+        width: 150px;
+        height: 40px;
+        font-size: 20px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+       }
+        #lecture_data{
+            width: 80%;
+            background-color: beige;
+            border: 1px solid grey;
+            margin: auto;
+        }
+        #lecture_data>div{
+            width: 80%;
+            height: 30px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button><a href="./dashboard.html">Return to dashboard</a></button>
+    <form>
+        <input id="lecture" type="text" placeholder="Enter Lecture Details">
+        <button onclick="add_lecture()">Add</button>
+    </form>
+    <div id="lecture_data"></div>
+</body>
+</html>
+<script>
+    let dabba = document.getElementById("lecture_data");
+    let lecture_arr = JSON.parse(localStorage.getItem("Lecture")) || [];
+    let add_lecture = ()=>{
+        let lecture = document.getElementById("lecture").value;
+        let obj = {
+            name : lecture
+        }
+        lecture_arr.push(obj);
+        localStorage.setItem("Lecture",JSON.stringify(lecture_arr)); 
+    }
+
+    let append_lecture = (data)=>{
+        dabba.innerHTML = null;
+        data.forEach((el,i)=>{
+            let div = document.createElement("div");
+            let lect = document.createElement("h2");
+            lect.innerText = el.name;
+            let rem_lecture = document.createElement("button");
+            rem_lecture.innerText = "REMOVE";
+            rem_lecture.style.backgroundColor = "red"
+            rem_lecture.style.color = "white";
+            rem_lecture.onclick = ()=>{
+                lecture_arr.splice(i,1);
+                localStorage.setItem("Lecture",JSON.stringify(lecture_arr)); 
+                window.location.reload();
+            }
+
+            div.append(lect,rem_lecture);
+            dabba.append(div);
+        })
+    }
+
+    append_lecture(lecture_arr);
+</script>

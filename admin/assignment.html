@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Page</title>
+    <style>
+          *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+       input{
+        width: 50%;
+        height: 40px;
+        margin-left: 140px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        font-size: 20px;
+        text-align: center;
+       }
+       input+button{
+        width: 150px;
+        height: 40px;
+        font-size: 20px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+       }
+        #assignment_data{
+            width: 80%;
+            background-color: beige;
+            border: 1px solid grey;
+            margin: auto;
+        }
+        #assignment_data>div{
+            width: 80%;
+            height: 30px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button><a href="./dashboard.html">Return to dashboard</a></button>
+    <form>
+        <input id="assignment" type="text" placeholder="Enter Assignment">
+        <button onclick="add_assignment()">Add</button>
+    </form>
+    <div id="assignment_data"></div>
+</body>
+</html>
+<script>
+    let assignment_box = document.getElementById("assignment_data");
+    let assignment_arr = JSON.parse(localStorage.getItem("Assignment")) || [];
+    let add_assignment = ()=>{
+        // event.preventDefault();
+        let assignment = document.getElementById("assignment").value;
+        let assign = {
+            name : assignment
+        }
+        assignment_arr.push(assign);
+        localStorage.setItem("Assignment",JSON.stringify(assignment_arr)); 
+    }
+
+
+    let append_assignment = (data)=>{
+        assignment_box.innerHTML = null;
+        data.forEach((el,i)=>{
+            let div = document.createElement("div");
+            let ass = document.createElement("h2");
+            ass.innerText = el.name;
+            let rem_ass = document.createElement("button");
+            rem_ass.innerText = "REMOVE";
+            rem_ass.style.backgroundColor = "red"
+            rem_ass.style.color = "white";
+            rem_ass.onclick = ()=>{
+                assignment_arr.splice(i,1);
+                localStorage.setItem("Assignment",JSON.stringify(assignment_arr)); 
+                window.location.reload();
+            }
+
+            div.append(ass,rem_ass);
+            assignment_box.append(div);
+        })
+    }
+
+    append_assignment(assignment_arr);
+</script>

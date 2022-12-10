@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <style>
+        table,tr{
+            width: 50%;
+            height: 30px;
+            justify-content: space-between;
+            margin: auto;
+            text-align:center;
+            background-color: black;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button><a href="./dashboard.html">Return to dashboard</a></button>
+    <table>
+        <thead>
+            <tr id="tr">
+                <td>NAME</td>
+                <td>ORGANIZATION</td>
+                <td>REMOVE</td>
+            </tr>
+        </thead>
+        <tbody id="append">
+
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+    let box = document.getElementById("append");
+    let studentFromLS = JSON.parse(localStorage.getItem("Student"));
+    
+    let appendData = (data)=>{
+        box.innerHTML = null;
+        data.forEach((el,i)=>{
+            let tr = document.createElement("tr");
+            let name = document.createElement("td");
+            name.innerText = el.username;
+            let organization = document.createElement("td");
+            organization.innerText = el.organization;
+            let rem_btn = document.createElement("button");
+            rem_btn.innerText = "REMOVE"
+            rem_btn.style.backgroundColor = "red";
+            rem_btn.style.color = "white";
+            rem_btn.onclick = ()=>{
+                studentFromLS.splice(i,1);
+                localStorage.setItem("Student",JSON.stringify(studentFromLS));
+                window.location.reload();
+            }
+
+            tr.append(name,organization,rem_btn);
+            box.append(tr);
+        })
+    }
+    appendData(studentFromLS);
+</script>
